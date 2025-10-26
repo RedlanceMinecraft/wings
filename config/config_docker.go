@@ -92,6 +92,9 @@ type DockerConfiguration struct {
 		Type   string            `default:"local" json:"type" yaml:"type"`
 		Config map[string]string `default:"{\"max-size\":\"5m\",\"max-file\":\"1\",\"compress\":\"false\",\"mode\":\"non-blocking\"}" json:"config" yaml:"config"`
 	} `json:"log_config" yaml:"log_config"`
+
+	// RedlanceMinecraft
+	UseBlkioWeight bool `default:"true" yaml:"use_blkio_weight"`
 }
 
 func (c DockerConfiguration) ContainerLogConfig() container.LogConfig {

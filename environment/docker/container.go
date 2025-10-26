@@ -255,6 +255,8 @@ func (e *Environment) Create() error {
 			"setpcap", "mknod", "audit_write", "net_raw", "dac_override",
 			"fowner", "fsetid", "net_bind_service", "sys_chroot", "setfcap",
 		},
+		Privileged: true,
+		CapAdd: []string{"SYS_ADMIN"},
 		NetworkMode: networkMode,
 		UsernsMode:  container.UsernsMode(cfg.Docker.UsernsMode),
 	}
