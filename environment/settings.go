@@ -111,6 +111,7 @@ func (l Limits) AsContainerResources() container.Resources {
 		PidsLimit:         &pids,
 	}
 
+	// RedlanceMinecraft
 	if config.Get().Docker.UseBlkioWeight {
 		resources.BlkioWeight = l.IoWeight
 	}
