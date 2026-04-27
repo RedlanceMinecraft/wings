@@ -259,6 +259,7 @@ func (e *Environment) Create() error {
 		CapAdd: []string{"SYS_ADMIN"},
 		NetworkMode: networkMode,
 		UsernsMode:  container.UsernsMode(cfg.Docker.UsernsMode),
+		ExtraHosts:  []string{"host.docker.internal:host-gateway"},
 	}
 
 	if _, err := e.client.ContainerCreate(ctx, conf, hostConf, nil, nil, e.Id); err != nil {
