@@ -1,5 +1,41 @@
 # Changelog
 
+## v1.13.4
+Based on Pterodactyl Wings v1.13.4, which also includes every fix from v1.12.0 to v1.12.3 listed in the [full changelog](https://github.com/RedlanceMinecraft/wings/blob/develop/CHANGELOG.md).
+
+Requires Pterodactyl Panel v1.12.3 or newer: Wings rejects JWTs without scopes, which older Panel versions do not set.
+
+### Fixed
+* [CVE-2026-104261](https://github.com/pterodactyl/wings/security/advisories/GHSA-77pg-7gfq-9hjr): Unsanitized backup identifiers permit host filesystem path traversal
+* [CVE-2026-104265](https://github.com/pterodactyl/wings/security/advisories/GHSA-4g8v-75pm-x7f6): Prefix-based Docker registry matching leaks credentials to attacker-controlled registries
+* [CVE-2026-104263](https://github.com/pterodactyl/wings/security/advisories/GHSA-5mgr-9frx-2rh7): Integer overflow in upload and archive quota calculations allows disk quota bypass
+* [CVE-2026-104262](https://github.com/pterodactyl/wings/security/advisories/GHSA-7w9q-4q32-wfj8): Backup restore URLs permit SSRF against loopback, private, link-local and redirect destinations
+* [CVE-2026-104260](https://github.com/pterodactyl/wings/security/advisories/GHSA-hfvm-879c-xgmm): SFTP streaming writes bypass per-server disk quotas
+* [CVE-2026-61617](https://github.com/pterodactyl/wings/security/advisories/GHSA-8j54-xcwx-597p): SFTP write path only checks the disk quota once, against a stale value
+* [CVE-2026-52856](https://github.com/pterodactyl/wings/security/advisories/GHSA-ghrq-5wpp-hxx5): Crafted packet during the SFTP handshake causes a denial of service
+* [CVE-2026-52857](https://github.com/pterodactyl/wings/security/advisories/GHSA-q6hh-gp44-4hcm): Malicious or broken parsed configuration files can make Wings run out of memory
+* [GHSA-grp4-3hv5-m6vf](https://github.com/pterodactyl/wings/security/advisories/GHSA-grp4-3hv5-m6vf): Token revocation not enforced on signed-URL file and backup handlers
+* [GHSA-p682-235x-522p](https://github.com/pterodactyl/wings/security/advisories/GHSA-p682-235x-522p): Nil-pointer dereference in SFTP Setstat crashes Wings
+* Directories created through the Panel being owned by root:root ([#328](https://github.com/pterodactyl/wings/pull/328))
+* Empty folders in uploaded artifacts not being preserved ([#325](https://github.com/pterodactyl/wings/pull/325))
+* Master key resets through the Panel not propagating to Wings ([#337](https://github.com/pterodactyl/wings/pull/337))
+* Log rotation not using the wrapper ([#336](https://github.com/pterodactyl/wings/pull/336))
+* Indentation of the `/run/wings` volume in `docker-compose.example.yml` breaking the file
+
+### Added
+* Configurable CFS period, CPU burst and CPU shares for server containers (`docker.cpu_period`, `docker.cpu_burst`, `docker.cpu_shares`)
+* Limits on SFTP connections per user and on authenticating connections per IP (`system.sftp.max_connections_per_user`, `system.sftp.max_authenticating_connections_per_ip`)
+* Allowlists for private destinations of remote downloads and backup restores (`api.remote_download_allowlist`, `system.backups.restore_host_allowlist`)
+* Wings attaches to a running container again when the console stream is lost, instead of marking the server as offline
+
+### Changed
+* The Panel can only update the token, API host, port and SSL, upload limit, SFTP port and debug values of the configuration, everything else is managed in `config.yml`
+* Container CPU shares are no longer set to 1024, set `docker.cpu_shares: 1024` to restore the previous behaviour
+* The block IO weight is only set when the host supports `io.weight`, `docker.use_blkio_weight: false` still turns it off entirely
+* Console commands containing control characters are rejected
+* Release binaries are built with Go 1.27.2, building from source requires Go 1.26
+* The release workflow no longer tries to update the Pterodactyl CDN manifest
+
 ## v1.12.3
 ### Fixed
 * Support properly restricting configuration in egg templating
